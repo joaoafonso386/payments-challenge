@@ -1,7 +1,7 @@
 {
   "name": "payments-challenge",
   "$schema": "node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "src",
+  "sourceRoot": "app",
   "projectType": "application",
   "targets": {
     "build": {
@@ -13,9 +13,9 @@
         "outputPath": "dist/payments-challenge",
         "format": ["cjs"],
         "bundle": false,
-        "main": "src/main.ts",
+        "main": "app/main.ts",
         "tsConfig": "tsconfig.app.json",
-        "assets": ["src/assets"],
+        "assets": ["app/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
