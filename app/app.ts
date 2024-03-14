@@ -5,9 +5,8 @@ import AutoLoad from '@fastify/autoload';
 /* eslint-disable-next-line */
 export interface AppOptions {}
 
-export const app = async (fastify: FastifyInstance, opts: AppOptions) => {
+export const api = async (fastify: FastifyInstance, opts: AppOptions) => {
   // Place here your custom code!
-  
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -24,4 +23,5 @@ export const app = async (fastify: FastifyInstance, opts: AppOptions) => {
     dir: path.join(__dirname, 'routes'),
     options: { ...opts },
   });
+
 }
