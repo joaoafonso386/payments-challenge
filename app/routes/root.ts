@@ -6,9 +6,14 @@ export default async function (fastify: FastifyInstance) {
   });
 
   fastify.get('/', async function () {
+    return { message: 'Welcome to the payments-challenge API' };
+  });
+
+  fastify.get('/test-db', async function () {
     const users = this.mongo.db.collection('users')
     const { name } = await users.findOne({ "name": "João Afonso" })
     return { message: 'Welcome to the payments-challenge API', myName: name };
   });
+
   
 }
