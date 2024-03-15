@@ -11,6 +11,6 @@ import mongodb from '@fastify/mongodb'
 export default fp(async function (fastify: FastifyInstance) {
     fastify.register(mongodb, {
       forceClose: true,
-      url: 'mongodb://zigoto:zigoto@localhost:27017/payments',
+      url: `${process.env.MONGO_CONNECTION_STRING}`,
     });
 })

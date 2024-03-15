@@ -8,7 +8,7 @@ tmp
 # dependencies
 node_modules
 
-# IDEs and editors
+# IDEs, editors and env
 /.idea
 .project
 .classpath
@@ -16,6 +16,7 @@ node_modules
 *.launch
 .settings/
 *.sublime-workspace
+*.env
 
 # IDE - VSCode
 .vscode/*
