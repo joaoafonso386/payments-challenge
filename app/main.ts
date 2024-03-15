@@ -19,5 +19,6 @@ server.listen({ port, host }, (err) => {
     process.exit(1);
   } else {
     console.log(`[ READY ] http://${host}:${port}`);
+    console.log(`[ CONNECTED ] Mongo DB`);
   }
 });
