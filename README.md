@@ -9,3 +9,4 @@ Stack:
 -> Nx
 -> Fastify
 -> Node JS w/ Typescript
+-> MongoDB

@@ -8,8 +8,9 @@ tmp
 # dependencies
 node_modules
 
-# IDEs, editors and env
+# IDEs, editors, env and docs
 /.idea
+/docs
 .project
 .classpath
 .c9/
