@@ -6,5 +6,5 @@
     "types": ["node"]
   },
   "exclude": ["jest.config.ts", "app/**/*.spec.ts", "app/**/*.test.ts"],
-  "include": ["app/**/*.ts", "app/app.spec.ts", "app/app.ts", "app/main.ts", "app/app.spec.ts", "app/app.ts", "app/main.ts"]
+  "include": ["app/**/*.ts", "app/api.spec.ts", "app/api.ts", "app/main.ts", "app/api.spec.ts", "app/api.ts", "app/main.ts"]
 }

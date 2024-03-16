@@ -1,12 +1,12 @@
 import Fastify, { FastifyInstance } from 'fastify';
-import { app } from './app';
+import { api } from './api';
 
 describe('GET /', () => {
   let server: FastifyInstance;
 
   beforeEach(() => {
     server = Fastify();
-    server.register(app);
+    server.register(api);
   });
 
   it('should respond with a message', async () => {

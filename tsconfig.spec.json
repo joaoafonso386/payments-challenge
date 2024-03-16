@@ -10,5 +10,5 @@
     "app/**/*.test.ts",
     "app/**/*.spec.ts",
     "app/**/*.d.ts"
-, "app/app.spec.ts"  ]
+, "app/api.spec.ts"  ]
 }
