@@ -8,7 +8,12 @@ export default async function (fastify: FastifyInstance) {
 
     if(!user || !pass) throw new Error("Must provide credentials");
 
-    return { message: 'Hello to login', user, pass };
+    return { message: 'Your are logged in!', user, pass };
+  });
+
+  fastify.post<{ Body: User }>('/register', async  (req, res) => {
+
+    return { message: 'You are registered' };
   });
   
 }
