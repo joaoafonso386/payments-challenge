@@ -6,7 +6,7 @@ This project is inspired by this challenge:
 
 Stack:
 
--> Nx
--> Fastify
--> Node JS w/ Typescript
--> MongoDB
+-> Nx<br>
+-> Fastify<br>
+-> Node JS w/ Typescript<br>
+-> MongoDB<br>
