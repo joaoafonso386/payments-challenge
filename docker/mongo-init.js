@@ -1,6 +1,10 @@
-db.createUser({
-  user: 'test',
-  pwd: 'test',
+db = db.getSiblingDB('payments')
+
+db.createCollection('users');
+
+db.users.insert({
+  user: 'John',
+  pwd: 'Doe',
   roles: [
     {
       role: 'readWrite',
