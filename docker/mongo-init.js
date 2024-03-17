@@ -2,13 +2,14 @@ db = db.getSiblingDB('payments')
 
 db.createCollection('users');
 
+db.users.createIndex( { email: 1 }, { unique: true } )
+db.users.createIndex( { postCode: 1 }, { unique: true } )
+
 db.users.insert({
   user: 'John',
-  pwd: 'Doe',
-  roles: [
-    {
-      role: 'readWrite',
-      db: 'payments',
-    },
-  ],
+  surname: 'Doe',
+  postCode: '1800-057',
+  email: 'john@doe.com',
+  pwd: 'unhashed pwd',
+  type: 'test'
 });
