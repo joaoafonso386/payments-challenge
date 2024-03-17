@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   mongo:
     image: mongo:latest
@@ -9,14 +8,14 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: pass
-      MONGO_INITDB_DATABASE: payments
-
 
   mongo-ui:
     image: mongo-express
     restart: always
+    depends_on:
+    - mongo
     ports:
     - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
-      ME_CONFIG_MONGODB_URL: mongodb://user:pass@mongo:27017?ssl=false
+      ME_CONFIG_MONGODB_URL: mongodb://user:pass@mongo:27017
