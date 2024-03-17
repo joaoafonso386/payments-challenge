@@ -16,9 +16,7 @@ services:
     image: mongo-express
     restart: always
     ports:
-    - 1090:1090
+    - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: user
-      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-      ME_CONFIG_MONGODB_URL: mongodb://user:pass@mongo:27017
-      PORT: 1090
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_URL: mongodb://user:pass@mongo:27017?ssl=false
