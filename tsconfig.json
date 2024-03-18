@@ -2,6 +2,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict":true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
