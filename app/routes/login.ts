@@ -13,6 +13,9 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.post<{ Body: User }>('/register', async  (req, res) => {
 
+    const users = this.mongo.db.collection('users')
+    const { name } = await users.findOne({ "name": "João Afonso" })
+
     return { message: 'You are registered' };
   });
   

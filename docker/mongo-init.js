@@ -1,6 +1,21 @@
 db = db.getSiblingDB('payments');
 
-db.createCollection('users');
+db.createCollection('users', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      title: 'Users validation',
+      properties: {
+        user: {},
+        surname: {},
+        postCode: {},
+        email: {},
+        pwd: {},
+        type: {}
+      },
+    },
+  },
+});
 
 db.users.createIndex({ email: 1 }, { unique: true });
 db.users.createIndex({ postCode: 1 }, { unique: true });
