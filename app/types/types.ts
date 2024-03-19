@@ -1,4 +1,6 @@
 export type User = {
-  user: string;
+  name: string;
   pass: string;
+  email?: string;
+  postCode?: string;
 };
