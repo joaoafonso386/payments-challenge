@@ -16,7 +16,7 @@ export default async function (f: FastifyInstance) {
     const users: any = f.mongo?.db?.collection('users')
     const { name } = await users.findOne({ "name": "John Doe" })
     
-    return { message: 'You are registered' };
+    return { message: 'You are registered', name };
   });
   
 }

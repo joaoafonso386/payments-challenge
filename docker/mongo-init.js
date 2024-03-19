@@ -3,7 +3,7 @@ db = db.getSiblingDB('payments');
 db.createUser({
   user: "zigoto",
   pwd: "zigoto",
-  roles: [ { role: "userAdmin", db: "payments" } ]
+  roles: [ { role: "dbOwner", db: "payments" } ]
 })
 
 
