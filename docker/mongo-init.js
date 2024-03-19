@@ -1,5 +1,12 @@
 db = db.getSiblingDB('payments');
 
+db.createUser({
+  user: "zigoto",
+  pwd: "zigoto",
+  roles: [ { role: "userAdmin", db: "payments" } ]
+})
+
+
 db.createCollection('users', {
   validator: {
     $jsonSchema: {
@@ -52,3 +59,4 @@ db.users.insertMany([
     type: 'shopkeeper',
   },
 ]);
+
