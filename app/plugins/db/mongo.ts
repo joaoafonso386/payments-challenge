@@ -8,8 +8,8 @@ import mongodb from '@fastify/mongodb'
  * @see https://github.com/fastify/fastify-mongodb
  */
 
-export default fp(async function (fastify: FastifyInstance) {
-    fastify.register(mongodb, {
+export default fp(async function (f: FastifyInstance) {
+    f.register(mongodb, {
       forceClose: true,
       url: `${process.env.MONGO_CONNECTION_STRING}`,
     });
