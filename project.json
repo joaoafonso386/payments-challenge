@@ -38,9 +38,10 @@
     },
     "serve": {
       "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "payments-challenge:build"
+        "buildTarget": "payments-challenge:build",
+        "runBuildTargetDependencies": false,
+        "watch": true
       },
       "configurations": {
         "development": {

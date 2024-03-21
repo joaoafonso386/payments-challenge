@@ -1,5 +1,5 @@
 import { User } from 'app/types/types';
-import { validateAuthBody } from 'app/utils/utils';
+import { validateAuthBody } from "../utils/utils";
 import { FastifyInstance } from 'fastify';
 
 export default async function register (f: FastifyInstance) {
