@@ -5,11 +5,12 @@ import { FastifyInstance } from 'fastify';
 export default async function register (f: FastifyInstance) {
   f.post<{ Body: User }>('/register', async (req, res) => {
 
-    const { isValid, error } = validateAuthBody(req)  
+    const error = validateAuthBody(req)
+
+    if(!error) return { msg: 'You are registered!' };
     
-    if(!isValid) return { msg: 'You are not registered!', error }
+    return { msg: 'You are not registered!', error }
     
-    return { msg: 'You are registered!' };
   });
   
 }

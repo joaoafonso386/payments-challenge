@@ -4,17 +4,18 @@ import { FastifyRequest } from "fastify"
 export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
 
     const { url, body } = req
-    const { name, pass } = body
+    const { name, pass, email, postCode } = body
 
     if(url === "/register") {
-        return { isValid: true, error: 'no error' }
+        if (!name || !pass || !email || !postCode) return 'Must provide all arguments'
+        return false
     }
     
     if(url === "/login") {
-        if(!name || !pass) return { isValid: false, error: 'no user or password provided!' }
-        return { isValid: true, error: 'no error' }
+        if(!name || !pass) return 'No user or password provided!'
+        return false
     }
     
     
-    return { isValid: true, error: 'no error' }
+    return false
 }
