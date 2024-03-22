@@ -31,12 +31,20 @@ export default async function transfer (f: FastifyInstance) {
           throw new Error("Insufficient funds for transfer")
         }
 
+        const service = await fetch("https://util.devi.tools/api/v2/authorize")
+        const { data } = await service.json()
+        if(!data.authorization) {
+          throw new Error("External confirmation not guaranteed")
+        }
+
       } catch (e: unknown) {
         if(e instanceof JsonWebTokenError){
           throw new Error("Invalid token")
         }
         throw new Error(`${e}`)
       }
+
+     
 
       return res.code(200).send({ msg: "Transfer made" })
     });
