@@ -7,9 +7,11 @@ export default async function register (f: FastifyInstance) {
 
     const error = validateAuthBody(req)
 
-    if(!error) return { msg: 'You are registered!' };
-    
-    return { msg: 'You are not registered!', error }
+    if(error) return { msg: 'You are not registered!', error }
+
+    const users =  f.mongo.db?.collection('users')
+    const inserted = await users?.insertOne(req.body)
+    return { msg: 'You are registered!' };
     
   });
   
