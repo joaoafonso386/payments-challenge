@@ -21,3 +21,7 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     return false
 }
 
+export const hashPwd = (pwd: string) => {
+    return
+}
+
