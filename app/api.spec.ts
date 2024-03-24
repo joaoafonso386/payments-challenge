@@ -1,6 +1,8 @@
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from './api';
 
+//need to mock mongo db
+
 describe('GET /', () => {
   let server: FastifyInstance;
 

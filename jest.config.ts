@@ -9,7 +9,7 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: './coverage/payments-challenge',
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
-    '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
+    '<rootDir>/app/**/__tests__/**/*.[jt]s?(x)',
+    '<rootDir>/app/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
 };
