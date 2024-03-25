@@ -6,7 +6,13 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 // Instantiate Fastify with some config
 const server = Fastify({
-  logger: true,
+  logger: {
+    level: 'info',
+    redact: {
+      paths: ["pid", "hostname", "reqId", "req.remoteAddress", "req.remotePort", "req.method"],
+      remove: true
+    }
+  }
 });
 
 // Register your application as a normal plugin.
