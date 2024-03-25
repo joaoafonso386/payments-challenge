@@ -1,3 +1,4 @@
+import { hash } from '@node-rs/bcrypt';
 import { User } from 'app/types/types';
 import { FastifyRequest } from "fastify"
 
@@ -21,7 +22,7 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     return false
 }
 
-export const hashPwd = (pwd: string) => {
-    return
+export const hashPwd = async (pwd: string) => {
+    return await hash(pwd)
 }
 
