@@ -12,8 +12,12 @@ db.createCollection('users', {
     $jsonSchema: {
       required: [ "name", "postCode", "email", "pwd", "type" ],
       bsonType: 'object',
+      additionalProperties: false,
       title: 'Users validation',
       properties: {
+        _id: { 
+          bsonType: "objectId" ,
+        },
         name: {
           bsonType: "string",
           description: "must be a string and is required"
