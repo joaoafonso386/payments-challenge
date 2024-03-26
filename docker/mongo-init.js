@@ -14,7 +14,7 @@ db.createCollection('users', {
       bsonType: 'object',
       title: 'Users validation',
       properties: {
-        user: {
+        name: {
           bsonType: "string",
           description: "must be a string and is required"
         },
