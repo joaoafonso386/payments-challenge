@@ -17,6 +17,9 @@ dependencies:
   '@node-rs/bcrypt':
     specifier: ^1.10.1
     version: 1.10.1
+  email-validator:
+    specifier: ^2.0.4
+    version: 2.0.4
   fastify:
     specifier: ~4.13.0
     version: 4.13.0
@@ -3828,6 +3831,11 @@ packages:
   /electron-to-chromium@1.4.712:
     resolution: {integrity: sha512-ncfPC8UnGIyGFrPE03J5Xn6yTZ6R+clkcZbuG1PJbjAaZBFS4Kn3UKfzu8eilzru6SfC8TPsHuwv0p0eYVu+ww==}
     dev: true
+
+  /email-validator@2.0.4:
+    resolution: {integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==}
+    engines: {node: '>4.0'}
+    dev: false
 
   /emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}

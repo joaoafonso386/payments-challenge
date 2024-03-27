@@ -13,6 +13,7 @@
     "@fastify/mongodb": "^8.0.0",
     "@fastify/sensible": "~5.2.0",
     "@node-rs/bcrypt": "^1.10.1",
+    "email-validator": "^2.0.4",
     "fastify": "~4.13.0",
     "fastify-plugin": "~4.5.0",
     "jsonwebtoken": "^9.0.2",
