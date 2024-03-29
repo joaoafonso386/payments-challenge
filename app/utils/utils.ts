@@ -9,7 +9,6 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     const { url, body } = req
     const { name, pwd, email, postCode, type } = body
 
-    //TODO: check if email is valid
     if(url === "/register") {
         const errorRes = `Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided ${JSON.stringify(body)}`
         if (!name || !pwd || !email || !postCode || !type || !validatePostCode(postCode) || !validateEmail(email)) return errorRes
@@ -20,7 +19,6 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
         if(!name || !pwd) return 'No user or password provided!'
         return false
     }
-    
     
     return false
 }

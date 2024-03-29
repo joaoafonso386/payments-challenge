@@ -17,13 +17,13 @@ export default async function register (f: FastifyInstance) {
 
     try {
       const users =  f.mongo.db?.collection('users')
-      inserted = await users?.insertOne({ ...req.body, pwd: hasedPwd })
+      inserted = await users?.findOneAndUpdate({ ...req.body, pwd: hasedPwd }, { $set: {} }, { upsert: true, returnDocument: "after" })
       req.log.info("User inserted!")
     } catch(e) {
       throw res.code(500).send({ status: `${res.statusCode}`, msg: `An error has occurred. ${e}` })
     } 
 
-    const token = sign({ userId: inserted?.insertedId }, `${process.env.SECRET_KEY}`, {
+    const token = sign({ role: inserted?.type }, `${process.env.SECRET_KEY}`, {
       expiresIn: '5m',
     });
 
