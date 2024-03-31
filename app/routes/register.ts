@@ -24,7 +24,7 @@ export default async function register (f: FastifyInstance) {
     } 
 
     const token = sign({ role: inserted?.type }, `${process.env.SECRET_KEY}`, {
-      expiresIn: '5m',
+      expiresIn: '30m',
     });
 
 
