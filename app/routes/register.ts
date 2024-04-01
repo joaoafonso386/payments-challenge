@@ -28,7 +28,7 @@ export default async function register (f: FastifyInstance) {
     });
 
 
-    return res.code(200).send({ status: `${res.statusCode}`, msg: "You are registered", token })
+    return res.code(200).send({ status: `${res.statusCode}`, msg: "You are registered!", token })
   });
   
 }

@@ -16,11 +16,10 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     }
     
     if(url === "/login") {
-        if(!name || !pwd) return 'No user or password provided!'
+        if(!pwd || !email || !validateEmail(email)) return 'No email or password provided! Your email format can also be incorrect, please check it'
         return false
     }
-    
-    return false
+
 }
 
 export const hashPwd = async (pwd: string) => {
