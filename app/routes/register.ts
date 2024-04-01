@@ -1,5 +1,6 @@
 import { User } from 'app/types/types';
-import { hashPwd, validateAuthBody } from "../utils/utils";
+import { hash } from '@node-rs/bcrypt';
+import { validateAuthBody } from "../utils/utils";
 import { FastifyInstance } from 'fastify';
 import { sign } from 'jsonwebtoken';
 
@@ -12,7 +13,7 @@ export default async function register (f: FastifyInstance) {
     if(error) return res.code(403).send({ status: `${res.statusCode}`, msg: 'You are not registered!', error })
    
     req.log.info("Hashing password...")
-    const hasedPwd = await hashPwd(req.body.pwd)
+    const hasedPwd = await hash(req.body.pwd)
     req.log.info("Inserting in DB...")
 
     try {
@@ -23,12 +24,8 @@ export default async function register (f: FastifyInstance) {
       throw res.code(500).send({ status: `${res.statusCode}`, msg: `An error has occurred. ${e}` })
     } 
 
-    const token = sign({ role: inserted?.type }, `${process.env.SECRET_KEY}`, {
-      expiresIn: '30m',
-    });
 
-
-    return res.code(200).send({ status: `${res.statusCode}`, msg: "You are registered!", token })
+    return res.code(200).send({ status: `${res.statusCode}`, msg: "You are registered!" })
   });
   
 }

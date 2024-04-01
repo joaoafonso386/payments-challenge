@@ -1,4 +1,3 @@
-import { hash } from '@node-rs/bcrypt';
 import { User } from 'app/types/types';
 import { FastifyRequest } from "fastify"
 import * as EmailValidator from 'email-validator';
@@ -8,6 +7,8 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
 
     const { url, body } = req
     const { name, pwd, email, postCode, type } = body
+
+    //Missing sanitize of inputs with dompurify
 
     if(url === "/register") {
         const errorRes = `Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided ${JSON.stringify(body)}`
@@ -20,10 +21,6 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
         return false
     }
 
-}
-
-export const hashPwd = async (pwd: string) => {
-    return await hash(pwd)
 }
 
 export const validatePostCode = (postCode: string) => {
