@@ -12,9 +12,7 @@ export default async function register (f: FastifyInstance) {
 
     if(error) return res.code(403).send({ status: `${res.statusCode}`, msg: 'You are not registered!', error })
    
-    req.log.info("Hashing password...")
     const hasedPwd = await hash(req.body.pwd)
-    req.log.info("Inserting in DB...")
 
     try {
       const users =  f.mongo.db?.collection('users')
