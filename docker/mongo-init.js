@@ -38,6 +38,10 @@ db.createCollection('users', {
           bsonType: "string",
           enum: [ "user", "shopkeeper" ],
           description: "Must be either user, or shopkeeper"
+        },
+        balance: {
+          bsonType: "int",
+          description: "Must be an int"
         }
       },
     },
