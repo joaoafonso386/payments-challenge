@@ -57,7 +57,7 @@ db.users.insertMany([
     postCode: '1800-057',
     email: 'john@doe.com',
     pwd: 'unhashed pwd',
-    type: 'user',
+    type: 'user'
   },
   {
     name: 'Mary Doe',
@@ -67,4 +67,32 @@ db.users.insertMany([
     type: 'shopkeeper',
   },
 ]);
+
+db.createCollection('transfers', {
+  validator: {
+    $jsonSchema: {
+      required: ["sender", "receiver", "amout"],
+      bsonType: 'object',
+      additionalProperties: false,
+      title: 'Transfers validation',
+      properties: {
+        _id: { 
+          bsonType: "objectId" ,
+        },
+        sender: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        receiver: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        amount: {
+          bsonType: "int",
+          description: "must be a string and is required"
+        }
+      },
+    },
+  },
+});
 
