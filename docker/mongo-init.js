@@ -41,7 +41,7 @@ db.createCollection('users', {
         },
         balance: {
           bsonType: "int",
-          description: "Must be an int"
+          description: "Must be an int. Registered in USD"
         }
       },
     },
@@ -57,7 +57,8 @@ db.users.insertMany([
     postCode: '1800-057',
     email: 'john@doe.com',
     pwd: 'unhashed pwd',
-    type: 'user'
+    type: 'user',
+    balance: 100
   },
   {
     name: 'Mary Doe',
@@ -65,6 +66,7 @@ db.users.insertMany([
     email: 'mary@doe.com',
     pwd: 'unhashed pwd',
     type: 'shopkeeper',
+    balance: 450
   },
 ]);
 
