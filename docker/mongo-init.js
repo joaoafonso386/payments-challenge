@@ -73,7 +73,7 @@ db.users.insertMany([
 db.createCollection('transfers', {
   validator: {
     $jsonSchema: {
-      required: ["sender", "receiver", "amout"],
+      required: ["sender", "receiver", "amout", "date"],
       bsonType: 'object',
       additionalProperties: false,
       title: 'Transfers validation',
@@ -92,6 +92,10 @@ db.createCollection('transfers', {
         amount: {
           bsonType: "int",
           description: "must be a string and is required"
+        },
+        date: {
+          bsonType: "date",
+          description: "must be an ISO date and is required"
         }
       },
     },
