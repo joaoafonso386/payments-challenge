@@ -4,7 +4,7 @@ import { FastifyInstance } from 'fastify';
 import { compare } from '@node-rs/bcrypt';
 import { sign } from 'jsonwebtoken';
 
-export default async function (f: FastifyInstance) {
+export default async function login (f: FastifyInstance) {
   f.post<{ Body: User }>('/login', async  (req, res) => {
 
     const error = validateAuthBody(req)

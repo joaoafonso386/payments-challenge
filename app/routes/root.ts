@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
-export default async function (f: FastifyInstance) {
+export default async function root (f: FastifyInstance) {
   f.get('*', async () => ({
     message: 'This route does not exist' 
   }))
