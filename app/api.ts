@@ -6,12 +6,8 @@ import AutoLoad from '@fastify/autoload';
 export interface AppOptions {}
 
 export const api = async (f: FastifyInstance, opts: AppOptions) => {
-  // Place here your custom code!
-  // Do not touch the following lines
-
   // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
+  // those should be support plugins that are reused through your application
   f.register(AutoLoad, {
     dir: path.join(__dirname, 'plugins'),
     options: { ...opts },
