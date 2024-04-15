@@ -15,7 +15,7 @@ export default async function login (f: FastifyInstance) {
     try {
       const users =  f.mongo.db?.collection('users')
       //filter to just return user and pwd from document
-      user = await users?.findOne({ email: req.body.email })
+      user = await users?.findOne<User>({ email: req.body.email })
     } catch (e) {
       throw res.code(500).send({ status: `${res.statusCode}`, msg: `An error has occurred. ${e}` })
     }
@@ -29,7 +29,7 @@ export default async function login (f: FastifyInstance) {
       return res.code(404).send({ status: `${res.statusCode}`, msg: 'User or password are incorrect' })
     }
 
-    const token = sign({ role: user?.type }, `${process.env.SECRET_KEY}`, {
+    const token = sign({ email: user?.email, role: user?.type }, `${process.env.SECRET_KEY}`, {
       expiresIn: '30m',
     });
 
