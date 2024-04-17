@@ -4,4 +4,15 @@ export type User = {
   email?: string;
   postCode?: string;
   type?: string;
+  balance?: number
 };
+
+export type TokenPayload = {
+  email: string;
+  type: string;
+}
+
+export enum UserType {
+  USER = "user",
+  SHOPKEEPER = "shopkeeper"
+}

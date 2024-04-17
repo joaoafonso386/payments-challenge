@@ -29,7 +29,7 @@ export default async function login (f: FastifyInstance) {
       return res.code(404).send({ status: `${res.statusCode}`, msg: 'User or password are incorrect' })
     }
 
-    const token = sign({ email: user?.email, role: user?.type }, `${process.env.SECRET_KEY}`, {
+    const token = sign({ email: user?.email, type: user?.type }, `${process.env.SECRET_KEY}`, {
       expiresIn: '30m',
     });
 
