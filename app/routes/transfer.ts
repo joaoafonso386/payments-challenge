@@ -21,12 +21,11 @@ export default async function transfer (f: FastifyInstance) {
         if(userToken.type !== UserType.USER) {
           throw new Error("You are not a user, transfers are not available")
         }
-        const users =  f.mongo.db?.collection('users')
-        const user = await users?.findOne<User>({ email: userToken.email })
-        console.log(user)
-        if(user?.balance || 0 < amout) {
-          throw new Error("Insufficient founds for transaction")
-        }
+        const usersCollection =  f.mongo.db?.collection('users')
+        const users = await usersCollection?.find<User>({ email: { $in: [userToken.email, receiver] }}).toArray()
+        // if(user?.balance|| 0 < amout) {
+        //   throw new Error("Insufficient founds for transaction")
+        // }
       } catch {
         throw new Error("Invalid Token")
       }
