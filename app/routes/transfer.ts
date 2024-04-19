@@ -2,7 +2,6 @@ import { TokenPayload, User, UserType } from "../types/types";
 import { FastifyInstance } from "fastify";
 import { JsonWebTokenError, verify } from "jsonwebtoken";
 
-//logic for a payment (transfer)
 export default async function transfer (f: FastifyInstance) {
     f.post<{ Body: { receiver: string, amount: string } }>('/transfer', async (req, res) => {
 
@@ -38,8 +37,6 @@ export default async function transfer (f: FastifyInstance) {
         }
         throw new Error(`${e}`)
       }
-
-
 
       return res.code(200).send({ msg: "Transfer made" })
     });

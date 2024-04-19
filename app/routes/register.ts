@@ -2,7 +2,6 @@ import { User } from 'app/types/types';
 import { hash } from '@node-rs/bcrypt';
 import { validateAuthBody } from "../utils/utils";
 import { FastifyInstance } from 'fastify';
-import { sign } from 'jsonwebtoken';
 
 export default async function register (f: FastifyInstance) {
   f.post<{ Body: User }>('/register', async (req, res) => {

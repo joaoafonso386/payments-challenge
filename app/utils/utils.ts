@@ -5,8 +5,8 @@ import * as EmailValidator from 'email-validator';
 
 export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
 
-    const { url, body } = req
-    const { name, pwd, email, postCode, type } = body
+    const { url } = req
+    const { name, pwd, email, postCode, type } = req.body
 
     //Missing sanitize of inputs with dompurify
 
@@ -23,6 +23,7 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
 
 }
 
+//Validates PT post codes
 export const validatePostCode = (postCode: string) => {
     return /^[1-9][0-9]{3}-[0-9]{3}$/.test(postCode) 
 }
