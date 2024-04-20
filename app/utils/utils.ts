@@ -11,7 +11,7 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     //Missing sanitize of inputs with dompurify
 
     if(url === "/register") {
-        const errorRes = `Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided ${JSON.stringify(body)}`
+        const errorRes = `Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided ${JSON.stringify(req.body)}`
         if (!name || !pwd || !email || !postCode || !type || !validatePostCode(postCode) || !validateEmail(email)) return errorRes
         return false
     }
