@@ -1,3 +1,4 @@
+import { ObjectId } from "@fastify/mongodb";
 import { TokenPayload, User, UserType } from "../types/types";
 import { FastifyInstance } from "fastify";
 import { JsonWebTokenError, verify } from "jsonwebtoken";
@@ -8,7 +9,7 @@ export default async function transfer (f: FastifyInstance) {
       if(!req.headers.authorization) throw new Error("Authorization header is missing")
       
       const tokenParts = req.headers.authorization?.split(" ")
-      const receiver = req.body.receiver
+      const receiverEmail = req.body.receiver
       const amount = parseInt(req.body.amount)
 
       if(tokenParts.length !== 2 || tokenParts[0] !== "Bearer") throw new Error("Invalid authorization header format")
@@ -21,11 +22,12 @@ export default async function transfer (f: FastifyInstance) {
           throw new Error("You are not a user, transfers are not available")
         }
         const usersCollection =  f.mongo.db?.collection('users')
-        const users = await usersCollection?.find<User>({ email: { $in: [senderToken.email, receiver] }}).toArray() || []
+        const users = await usersCollection?.find<User>({ email: { $in: [senderToken.email, receiverEmail] }}).toArray() || []
         if(users?.length < 2) {
           throw new Error("Receiver or sender does not exist")
         }
         const sender = users.find(user => user.email === senderToken.email)
+        const receiver  = users.find(user => user.email === receiverEmail)
         const balance = sender?.balance || 0
         if(amount > balance) {
           throw new Error("Insufficient funds for transfer")
@@ -36,6 +38,9 @@ export default async function transfer (f: FastifyInstance) {
         if(!data.authorization) {
           throw new Error("External confirmation not guaranteed")
         }
+
+        const transfersCollection =  f.mongo.db?.collection('transfers')
+        const transfer = await transfersCollection?.insertOne({ sender: senderToken.email, receiver, amount, date: new Date(Date.now()).toISOString() })
 
       } catch (e: unknown) {
         if(e instanceof JsonWebTokenError){

@@ -94,7 +94,7 @@ db.createCollection('transfers', {
           description: "must be a string and is required"
         },
         date: {
-          bsonType: "date",
+          bsonType: "string",
           description: "must be an ISO date and is required"
         }
       },
