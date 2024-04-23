@@ -21,6 +21,9 @@ export default async function transfer (f: FastifyInstance) {
         if(senderToken.type !== UserType.USER) {
           throw new Error("You are not a user, transfers are not available")
         }
+        if(senderToken.email === receiverEmail) {
+          throw new Error("You cannot transfer to yourself")
+        }
         const usersCollection =  f.mongo.db?.collection('users')
         const users = await usersCollection?.find<User>({ email: { $in: [senderToken.email, receiverEmail] }}).toArray() || []
         if(users?.length < 2) {
