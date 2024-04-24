@@ -1,4 +1,3 @@
-import { ObjectId } from "@fastify/mongodb";
 import { TokenPayload, User, UserType } from "../types/types";
 import { FastifyInstance } from "fastify";
 import { JsonWebTokenError, verify } from "jsonwebtoken";
@@ -29,8 +28,7 @@ export default async function transfer (f: FastifyInstance) {
         if(users?.length < 2) {
           throw new Error("Receiver or sender does not exist")
         }
-        const sender = users.find(user => user.email === senderToken.email)
-        const receiver  = users.find(user => user.email === receiverEmail)
+        const [sender, receiver] = users.sort((a, b) => a.email === senderToken.email ? -1 : 0) 
         const balance = sender?.balance || 0
         if(amount > balance) {
           throw new Error("Insufficient funds for transfer")
