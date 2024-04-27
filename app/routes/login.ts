@@ -15,17 +15,14 @@ export default async function login (f: FastifyInstance) {
     try {
       const users =  f.mongo.db?.collection('users')
       //filter to just return user and pwd from document
-      user = await users?.findOne<User>({ email: req.body.email })
+      user = await users?.findOne<User>({ email: req.body.email }) as User
     } catch (e) {
       throw res.code(500).send({ status: `${res.statusCode}`, msg: `An error has occurred. ${e}` })
     }
 
-    if(!user) {
-      return res.code(404).send({ status: `${res.statusCode}`, msg: 'User or password are incorrect' })
-    }
-
-    const validPwd = await compare(req.body.pwd, user?.pwd)
-    if(!validPwd) {
+    const validPwd = await compare(req.body.pwd, `${user?.pwd}` )
+        
+    if(!user || !validPwd) {
       return res.code(404).send({ status: `${res.statusCode}`, msg: 'User or password are incorrect' })
     }
 
