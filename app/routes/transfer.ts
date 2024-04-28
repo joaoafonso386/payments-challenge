@@ -3,9 +3,11 @@ import { FastifyInstance } from 'fastify';
 import { JsonWebTokenError, verify } from 'jsonwebtoken';
 
 export default async function transfer(f: FastifyInstance) {
-  f.post<{ Body: { receiver: string; amount: string } }>(
+  f.post<{ Body: { receiver: string; amount: string, token: any } }>(
     '/transfer',
     async (req, res) => {
+      //values coming form middleware
+      console.log(req.body.token)
       if (!req.headers.authorization)
         throw new Error('Authorization header is missing');
 
