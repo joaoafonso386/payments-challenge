@@ -1,7 +1,9 @@
 export const authHandler = (req:  any, res: any, next: any) => { 
-  const restricted = ["/transfer"]
+  const patterns = [
+    /^\/transfer(\/.*)?$/
+  ]
 
-  if (!restricted.includes(req.routerPath)) {
+  if (!patterns.some(pattern => pattern.test(req.routerPath))) {
       return next()
   }
 
