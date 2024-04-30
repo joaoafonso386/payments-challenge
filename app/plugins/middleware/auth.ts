@@ -1,3 +1,6 @@
+import { TokenPayload } from "app/types/types";
+import { verify } from "jsonwebtoken";
+
 export const authHandler = (req:  any, res: any, next: any) => { 
   const patterns = [
     /^\/transfer(\/.*)?$/
@@ -16,8 +19,18 @@ export const authHandler = (req:  any, res: any, next: any) => {
     throw new Error('Invalid authorization header format');
 
   const token = tokenParts[1];
+  let senderToken;
 
-  req.body.token = token
+  try {
+    senderToken = verify(
+      token,
+      `${process.env.SECRET_KEY}`
+    ) as TokenPayload;
+  } catch {
+    throw new Error('Invalid token');
+  }
+
+  req.body.token = { type: senderToken?.type, email: senderToken?.email }
 
   return next()
   
