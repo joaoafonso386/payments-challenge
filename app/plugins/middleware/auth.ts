@@ -9,13 +9,9 @@ export const authHandler = (req:  any, res: any, next: any) => {
   if (!patterns.some(pattern => pattern.test(req.routerPath))) {
       return next()
   }
-
-  if (!req.headers.authorization)
-      throw new Error('Authorization header is missing');
-
   const tokenParts = req.headers.authorization?.split(' ');
 
-  if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer')
+  if (!req.headers.authorization || tokenParts.length !== 2 || tokenParts[0] !== 'Bearer')
     throw new Error('Invalid authorization header format');
 
   const token = tokenParts[1];

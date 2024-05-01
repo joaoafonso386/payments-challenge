@@ -51,25 +51,6 @@ db.createCollection('users', {
 db.users.createIndex({ email: 1 }, { unique: true });
 db.users.createIndex({ postCode: 1 }, { unique: true });
 
-db.users.insertMany([
-  {
-    name: 'John Doe',
-    postCode: '1800-057',
-    email: 'john@doe.com',
-    pwd: 'unhashed pwd',
-    type: 'user',
-    balance: 100
-  },
-  {
-    name: 'Mary Doe',
-    postCode: '1800-051',
-    email: 'mary@doe.com',
-    pwd: 'unhashed pwd',
-    type: 'shopkeeper',
-    balance: 450
-  },
-]);
-
 db.createCollection('transfers', {
   validator: {
     $jsonSchema: {

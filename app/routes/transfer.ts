@@ -11,12 +11,8 @@ export default async function transfer(f: FastifyInstance) {
       const amount = parseInt(req.body.amount);
 
       try {
-        
         if (token.type !== UserType.USER) {
           throw new Error('You are not a user, transfers are not available');
-        }
-        if (token.email === receiverEmail) {
-          throw new Error('You cannot transfer to yourself');
         }
         const usersCollection = f.mongo.db?.collection('users');
         const users =
@@ -24,7 +20,7 @@ export default async function transfer(f: FastifyInstance) {
             ?.find<User>({ email: { $in: [token.email, receiverEmail] } })
             .toArray()) || [];
         if (users?.length < 2) {
-          throw new Error('Receiver or sender does not exist');
+          throw new Error('Receiver or sender does not exist. Please verify the provided emails for transfer');
         }
         const [sender, receiver] = users.sort((a) =>
           a.email === token.email ? -1 : 0
