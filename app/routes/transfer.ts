@@ -9,6 +9,7 @@ export default async function transfer(f: FastifyInstance) {
       const token = req.body.token
       const receiverEmail = req.body.receiver;
       const amount = parseInt(req.body.amount);
+      let session: any;
 
       try {
         if (token.type !== UserType.USER) {
@@ -29,7 +30,8 @@ export default async function transfer(f: FastifyInstance) {
         if (amount > balance) {
           throw new Error('Insufficient funds for transfer');
         }
-
+        
+        //Implement retry mechanism
         const service = await fetch("https://util.devi.tools/api/v2/authorize")
         const { data } = await service.json()
         if(!data.authorization) {
@@ -37,33 +39,38 @@ export default async function transfer(f: FastifyInstance) {
         }
 
         const transfersCollection = f.mongo.db?.collection('transfers');
+        session = f.mongo.client.startSession()
 
-        await transfersCollection?.insertOne({
-          sender: token.email,
-          receiver: receiver.email,
-          amount,
-          date: new Date(Date.now()).toISOString(),
-        });
-        req.log.info("Transfer registered")
-        await usersCollection?.updateMany(
-          { $or: [{ email: token.email }, { email: receiver.email }] },
-          [
-            {
-              $set: {
-                balance: {
-                  $cond: {
-                    if: { $eq: ['$email', token.email] },
-                    then: { $subtract: ["$balance", amount] },
-                    else: { $add: ["$balance", amount] },
+        await session.withTransaction(async () => {
+          await transfersCollection?.insertOne({
+            sender: token.email,
+            receiver: receiver.email,
+            amount,
+            date: new Date(Date.now()).toISOString(),
+          }, { session });
+          req.log.info("Transfer registered")
+          await usersCollection?.updateMany(
+            { $or: [{ email: token.email }, { email: receiver.email }] },
+            [
+              {
+                $set: {
+                  balance: {
+                    $cond: {
+                      if: { $eq: ['$email', token.email] },
+                      then: { $subtract: ["$balance", amount] },
+                      else: { $add: ["$balance", amount] },
+                    },
                   },
                 },
-              },
-            }
-          ]
-        );
-        req.log.info("Balance updated for sender and receiver")
+              }
+            ]
+          , { session });
+          req.log.info("Balance updated for sender and receiver")
+        })
       } catch (e: unknown) {
         throw new Error(`${e}`);
+      } finally {
+        await session?.endSession();
       }
 
       return res.code(200).send({ msg: 'Transfer made' });
