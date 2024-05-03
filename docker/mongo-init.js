@@ -1,3 +1,11 @@
+db = db.getSiblingDB('admin');
+
+db.createUser({
+  user: "root",
+  pwd: "root",
+  roles: [{ "role": "root", "db": "admin" }]
+})
+
 db = db.getSiblingDB('payments');
 
 db.createUser({
@@ -5,7 +13,6 @@ db.createUser({
   pwd: "zigoto",
   roles: [ { role: "dbOwner", db: "payments" } ]
 })
-
 
 db.createCollection('users', {
   validator: {
@@ -82,4 +89,3 @@ db.createCollection('transfers', {
     },
   },
 });
-
