@@ -2,7 +2,7 @@ import { TokenPayload, User, UserType } from '../types/types';
 import { FastifyInstance } from 'fastify';
 
 export default async function transfer(f: FastifyInstance) {
-  f.post<{ Body: { receiver: string; amount: string, token: TokenPayload } }>(
+  f.post<{ Body: { receiver: string, amount: string, token: TokenPayload } }>(
     '/transfer',
     async (req, res) => {
 
@@ -76,4 +76,25 @@ export default async function transfer(f: FastifyInstance) {
       return res.code(200).send({ msg: 'Transfer made' });
     }
   );
+
+  f.post<{ Body: { transferId?: string, token: TokenPayload } }>('/transfer/revert', async (req, res) => {
+
+    const token = req.body.token
+    const transferId = req.body.transferId
+
+    if (token.type !== UserType.USER) {
+      throw new Error('You are not a user, you can not revert a transfer');
+    }
+
+    const transfersCollection = f.mongo.db?.collection('transfers');
+
+    
+
+
+
+
+    
+    return res.code(200).send({ msg: 'Transfer reverted' });
+
+  })
 }
