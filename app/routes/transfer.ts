@@ -31,7 +31,6 @@ export default async function transfer(f: FastifyInstance) {
           throw new Error('Insufficient funds for transfer');
         }
         
-        //Implement retry mechanism
         const service = await fetch("https://util.devi.tools/api/v2/authorize")
         const { data } = await service.json()
         if(!data.authorization) {
@@ -87,13 +86,9 @@ export default async function transfer(f: FastifyInstance) {
     }
 
     const transfersCollection = f.mongo.db?.collection('transfers');
-
-    
-
+    const lastTransaction = await transfersCollection?.findOne({ sender: token.email }, { sort: { date: -1 }})
 
 
-
-    
     return res.code(200).send({ msg: 'Transfer reverted' });
 
   })
