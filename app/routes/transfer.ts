@@ -1,4 +1,4 @@
-import { TokenPayload, User, UserType } from '../types/types';
+import { TokenPayload, Transfer, User, UserType } from '../types/types';
 import { FastifyInstance } from 'fastify';
 
 export default async function transfer(f: FastifyInstance) {
@@ -86,8 +86,25 @@ export default async function transfer(f: FastifyInstance) {
     }
 
     const transfersCollection = f.mongo.db?.collection('transfers');
-    const lastTransaction = await transfersCollection?.findOne({ sender: token.email }, { sort: { date: -1 }})
+    const usersCollection = f.mongo.db?.collection('users');
+    const { receiver, amount } = await transfersCollection?.findOne<Transfer>({ sender: token.email }, { sort: { date: -1 }}) || {}
 
+    await usersCollection?.updateMany(
+      { $or: [{ email: token.email }, { email: receiver }] },
+      [
+        {
+          $set: {
+            balance: {
+              $cond: {
+                if: { $eq: ['$email', token.email] },
+                then: { $add: ["$balance", amount] },
+                else: { $subtract: ["$balance", amount] },
+              },
+            },
+          },
+        }
+      ]
+    )
 
     return res.code(200).send({ msg: 'Transfer reverted' });
 
