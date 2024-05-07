@@ -1,5 +1,6 @@
 import { TokenPayload, Transfer, User, UserType } from '../types/types';
 import { FastifyInstance } from 'fastify';
+import { isEmpty } from '../utils/utils';
 
 export default async function transfer(f: FastifyInstance) {
   f.post<{ Body: { receiver: string, amount: string, token: TokenPayload } }>(
@@ -85,9 +86,14 @@ export default async function transfer(f: FastifyInstance) {
       throw new Error('You are not a user, you can not revert a transfer');
     }
 
-    const transfersCollection = f.mongo.db?.collection('transfers');
+    const transfersCollection = f.mongo.db?.collection('transfers')
     const usersCollection = f.mongo.db?.collection('users');
-    const { receiver, amount } = await transfersCollection?.findOne<Transfer>({ sender: token.email }, { sort: { date: -1 }}) || {}
+    const lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email }, { sort: { date: -1 }}) as Transfer || {}
+    if(isEmpty(lasTransaction)) {
+      throw new Error("There are no transactions currently")
+    }
+
+    const { _id, amount, receiver } = lasTransaction 
 
     await usersCollection?.updateMany(
       { $or: [{ email: token.email }, { email: receiver }] },
@@ -105,6 +111,8 @@ export default async function transfer(f: FastifyInstance) {
         }
       ]
     )
+
+    await transfersCollection?.deleteOne({ _id });
 
     return res.code(200).send({ msg: 'Transfer reverted' });
 

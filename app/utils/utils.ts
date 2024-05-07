@@ -31,3 +31,8 @@ export const validatePostCode = (postCode: string) => {
 export const validateEmail = (email: string) => {
     return EmailValidator.validate(email)
 }
+
+
+export const isEmpty = (obj: any) => {
+    return Object.keys(obj).length === 0;
+}

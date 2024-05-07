@@ -1,3 +1,5 @@
+import { ObjectId } from "@fastify/mongodb";
+
 export type User = {
   name: string;
   pwd: string;
@@ -13,6 +15,7 @@ export type TokenPayload = {
 }
 
 export type Transfer = {
+  _id: ObjectId
   sender: string;
   receiver: string;
   amount: number;
