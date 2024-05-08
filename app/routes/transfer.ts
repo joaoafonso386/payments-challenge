@@ -1,6 +1,7 @@
 import { TokenPayload, Transfer, User, UserType } from '../types/types';
 import { FastifyInstance } from 'fastify';
 import { isEmpty } from '../utils/utils';
+import { ObjectId } from '@fastify/mongodb';
 
 export default async function transfer(f: FastifyInstance) {
   f.post<{ Body: { receiver: string, amount: string, token: TokenPayload } }>(
@@ -88,13 +89,20 @@ export default async function transfer(f: FastifyInstance) {
 
     const transfersCollection = f.mongo.db?.collection('transfers')
     const usersCollection = f.mongo.db?.collection('users');
-    const lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email }, { sort: { date: -1 }}) as Transfer || {}
+    let lasTransaction;
+
+    if(transferId) {
+      lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, _id: new ObjectId(transferId) }) as Transfer || {}
+    } else {
+      lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, }, { sort: { date: -1 }}) as Transfer || {}
+    }
+
     if(isEmpty(lasTransaction)) {
       throw new Error("There are no transactions currently")
     }
 
     const { _id, amount, receiver } = lasTransaction 
-
+    
     await usersCollection?.updateMany(
       { $or: [{ email: token.email }, { email: receiver }] },
       [
@@ -113,6 +121,7 @@ export default async function transfer(f: FastifyInstance) {
     )
 
     await transfersCollection?.deleteOne({ _id });
+  
 
     return res.code(200).send({ msg: 'Transfer reverted' });
 
