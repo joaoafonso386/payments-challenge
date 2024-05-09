@@ -4,9 +4,6 @@
   "sourceRoot": "app",
   "projectType": "application",
   "targets": {
-    "mongo:start": {
-      "command": "docker compose -f docker/compose.yaml up -d"
-    },
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
