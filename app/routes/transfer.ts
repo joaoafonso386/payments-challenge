@@ -82,45 +82,56 @@ export default async function transfer(f: FastifyInstance) {
 
     const token = req.body.token
     const transferId = req.body.transferId
+    let session: any;
+
 
     if (token.type !== UserType.USER) {
       throw new Error('You are not a user, you can not revert a transfer');
     }
 
-    const transfersCollection = f.mongo.db?.collection('transfers')
-    const usersCollection = f.mongo.db?.collection('users');
-    let lasTransaction;
-
-    if(transferId) {
-      lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, _id: new ObjectId(transferId) }) as Transfer || {}
-    } else {
-      lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, }, { sort: { date: -1 }}) as Transfer || {}
-    }
-
-    if(isEmpty(lasTransaction)) {
-      throw new Error("There are no transactions currently")
-    }
-
-    const { _id, amount, receiver } = lasTransaction 
-    
-    await usersCollection?.updateMany(
-      { $or: [{ email: token.email }, { email: receiver }] },
-      [
-        {
-          $set: {
-            balance: {
-              $cond: {
-                if: { $eq: ['$email', token.email] },
-                then: { $add: ["$balance", amount] },
-                else: { $subtract: ["$balance", amount] },
+    try {
+      const transfersCollection = f.mongo.db?.collection('transfers')
+      const usersCollection = f.mongo.db?.collection('users');
+      let lasTransaction;
+  
+      if(transferId) {
+        lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, _id: new ObjectId(transferId) }) as Transfer || {}
+      } else {
+        lasTransaction = await transfersCollection?.findOne<Transfer>({ sender: token.email, }, { sort: { date: -1 }}) as Transfer || {}
+      }
+  
+      if(isEmpty(lasTransaction)) {
+        throw new Error("There are no transactions currently")
+      }
+  
+      const { _id, amount, receiver } = lasTransaction 
+  
+      session = f.mongo.client.startSession()
+  
+      await session.withTransaction(async () => {
+        await usersCollection?.updateMany(
+          { $or: [{ email: token.email }, { email: receiver }] },
+          [
+            {
+              $set: {
+                balance: {
+                  $cond: {
+                    if: { $eq: ['$email', token.email] },
+                    then: { $add: ["$balance", amount] },
+                    else: { $subtract: ["$balance", amount] },
+                  },
+                },
               },
-            },
-          },
-        }
-      ]
-    )
-
-    await transfersCollection?.deleteOne({ _id });
+            }
+          ]
+        , { session })
+    
+        await transfersCollection?.deleteOne({ _id }, { session });  
+      })
+    } finally {
+      await session?.endSession();
+    }
+   
   
 
     return res.code(200).send({ msg: 'Transfer reverted' });
