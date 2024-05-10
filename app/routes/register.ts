@@ -6,7 +6,7 @@ import { FastifyInstance } from 'fastify';
 export default async function register (f: FastifyInstance) {
   f.post<{ Body: User }>('/register', async (req, res) => {
 
-    let inserted = undefined
+    let inserted;
     const error = validateAuthBody(req)
 
     if(error) return res.code(403).send({ status: `${res.statusCode}`, msg: 'You are not registered!', error })
@@ -17,7 +17,6 @@ export default async function register (f: FastifyInstance) {
     try {
       const users =  f.mongo.db?.collection('users')
       inserted = await users?.findOneAndUpdate({ ...req.body, pwd: hasedPwd, balance }, { $set: {} }, { upsert: true, returnDocument: "after" })
-      //use findOneAndUpdate to tell the user it has already registered once when it tries to register multiple times
       req.log.info("User inserted!")
     } catch(e) {
       throw res.code(500).send({ status: `${res.statusCode}`, msg: `An error has occurred. ${e}` })

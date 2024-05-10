@@ -8,8 +8,6 @@ export const validateAuthBody = (req: FastifyRequest<{ Body: User }>) => {
     const { url } = req
     const { name, pwd, email, postCode, type } = req.body
 
-    //Missing sanitize of inputs with dompurify
-
     if(url === "/register") {
         const errorRes = `Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided ${JSON.stringify(req.body)}`
         if (!name || !pwd || !email || !postCode || !type || !validatePostCode(postCode) || !validateEmail(email)) return errorRes
@@ -31,7 +29,6 @@ export const validatePostCode = (postCode: string) => {
 export const validateEmail = (email: string) => {
     return EmailValidator.validate(email)
 }
-
 
 export const isEmpty = (obj: any) => {
     return Object.keys(obj).length === 0;

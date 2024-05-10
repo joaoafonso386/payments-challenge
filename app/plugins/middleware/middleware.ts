@@ -4,9 +4,8 @@ import { authHandler } from './auth';
 
 
 /**
- * This plugins adds middleware capabilities (more than just fastify hooks)
- *
- * @see https://github.com/fastify/middie
+ * Custom middleware with fastify hooks
+ * 
  */
 
 export default fp(async (f: FastifyInstance, opts) => {
