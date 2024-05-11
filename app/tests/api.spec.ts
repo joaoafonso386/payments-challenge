@@ -1,9 +1,9 @@
 import Fastify, { FastifyInstance } from 'fastify';
-import { api } from './api';
+import { api } from '../api';
 
 //need to mock mongo db
 
-describe('GET /', () => {
+describe('Payments Challenge API', () => {
   let server: FastifyInstance;
 
   beforeEach(() => {
@@ -11,12 +11,12 @@ describe('GET /', () => {
     server.register(api);
   });
 
-  it('should respond with a message', async () => {
+  it('healthcheck root endpoint ping', async () => {
     const response = await server.inject({
       method: 'GET',
       url: '/',
     });
 
-    expect(response.json()).toEqual({ message: 'Hello API' });
+    expect(response.json()).toEqual({ message: 'Welcome to the payments-challenge API!' });
   });
 });

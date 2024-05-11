@@ -51,6 +51,13 @@
           "buildTarget": "payments-challenge:build:production"
         }
       }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "./jest.config.ts",
+        "codeCoverage": true
+      }
     }
   },
   "tags": []

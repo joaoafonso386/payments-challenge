@@ -1,5 +1,7 @@
+import { Config } from "jest"
+
 /* eslint-disable */
-export default {
+const config: Config = {
   displayName: 'payments-challenge',
   preset: './jest.preset.js',
   testEnvironment: 'node',
@@ -8,8 +10,11 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: './coverage/payments-challenge',
+  coverageReporters: ['text', 'json', 'lcov', 'clover', 'cobertura', 'html'],
   testMatch: [
-    '<rootDir>/app/**/__tests__/**/*.[jt]s?(x)',
+    '<rootDir>/app/**/tests/**/*.[jt]s?(x)',
     '<rootDir>/app/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
 };
+
+export default config
