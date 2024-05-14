@@ -12,7 +12,7 @@ const config: Config = {
   coverageDirectory: './coverage/payments-challenge',
   coverageReporters: ['text', 'json', 'lcov', 'clover', 'cobertura', 'html'],
   testMatch: [
-    '<rootDir>/app/**/tests/**/*.[jt]s?(x)',
+    '<rootDir>/app/**/tests/(?!mocks/)**/*.[jt]s?(x)',
     '<rootDir>/app/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
   coverageThreshold: {

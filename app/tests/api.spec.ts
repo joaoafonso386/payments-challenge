@@ -1,3 +1,4 @@
+import { newUser } from './mocks/registerMock';
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from '../api';
 
@@ -10,6 +11,10 @@ describe('Payments Challenge API', () => {
     server = Fastify();
     server.register(api);
   });
+
+  afterEach(async () => {
+    await server.close()
+  })
 
   it('healthcheck root endpoint ping', async () => {
     const response = await server.inject({
@@ -27,6 +32,17 @@ describe('Payments Challenge API', () => {
     });
 
     expect(response.json()).toEqual({ message: 'This route does not exist' });
+  });
+
+  it('registers a user ', async () => {
+    const response = await server.inject({
+      method: 'POST',
+      url: '/register',
+      payload: newUser
+    });
+
+    expect(response.json().status).toEqual('200');
+    expect(response.json()).toEqual({ message: 'You are registered!' });
   });
 
 });
