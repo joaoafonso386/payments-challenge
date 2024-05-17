@@ -17,6 +17,7 @@
     "fastify": "~4.13.0",
     "fastify-plugin": "~4.5.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.7.0",
     "serve-static": "^1.15.0",
     "tslib": "^2.3.0"
   },

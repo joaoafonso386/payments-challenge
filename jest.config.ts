@@ -4,10 +4,10 @@ import { Config } from "jest"
 const config: Config = {
   displayName: 'payments-challenge',
   preset: './jest.preset.js',
-  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
+  watchPathIgnorePatterns: ['globalConfig'],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: './coverage/payments-challenge',
   coverageReporters: ['text', 'json', 'lcov', 'clover', 'cobertura', 'html'],

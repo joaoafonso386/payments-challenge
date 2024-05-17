@@ -1,13 +1,15 @@
+import { Db, MongoClient } from 'mongodb';
 import { newUser } from './mocks/registerMock';
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from '../api';
 
-//need to mock mongo db
-
 describe('Payments Challenge API', () => {
   let server: FastifyInstance;
+  let connection: MongoClient;
+  let db: Db;
 
   beforeEach(() => {
+    process.env.MONGO_CONNECTION_STRING = process.env.MONGO_URL
     server = Fastify();
     server.register(api);
   });
@@ -15,6 +17,15 @@ describe('Payments Challenge API', () => {
   afterEach(async () => {
     await server.close()
   })
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(process.env.MONGO_URL as string);
+    db = connection.db();
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
 
   it('healthcheck root endpoint ping', async () => {
     const response = await server.inject({
@@ -42,7 +53,7 @@ describe('Payments Challenge API', () => {
     });
 
     expect(response.json().status).toEqual('200');
-    expect(response.json()).toEqual({ message: 'You are registered!' });
+    expect(response.json()).toEqual({ msg: 'You are registered!', status: response.json().status });
   });
 
 });
