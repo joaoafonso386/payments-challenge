@@ -8,24 +8,18 @@ describe('Payments Challenge API', () => {
   let connection: MongoClient;
   let db: Db;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     process.env.MONGO_CONNECTION_STRING = process.env.MONGO_URL
+    connection = await MongoClient.connect(process.env.MONGO_URL as string);
     server = Fastify();
-    server.register(api);
+    server.register(api)
   });
-
+  
   afterEach(async () => {
     await server.close()
-  })
-
-  beforeAll(async () => {
-    connection = await MongoClient.connect(process.env.MONGO_URL as string);
-    db = connection.db();
-  });
-
-  afterAll(async () => {
     await connection.close();
-  });
+
+  })
 
   it('healthcheck root endpoint ping', async () => {
     const response = await server.inject({
