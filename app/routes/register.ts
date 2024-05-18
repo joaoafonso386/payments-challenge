@@ -15,7 +15,7 @@ export default async function register (f: FastifyInstance) {
     const balance = Math.round(Math.random() * 10000)
 
     try {
-      const users =  f.mongo.db?.collection('users')
+      const users =  f.mongo.client.db().collection('users')
       inserted = await users?.findOneAndUpdate({ ...req.body, pwd: hasedPwd, balance }, { $set: {} }, { upsert: true, returnDocument: "after" })
       req.log.info("User inserted!")
     } catch(e) {

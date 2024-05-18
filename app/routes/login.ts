@@ -1,3 +1,4 @@
+import { Db } from 'mongodb';
 import { User } from 'app/types/types';
 import { validateAuthBody } from '../utils/utils';
 import { FastifyInstance } from 'fastify';
@@ -13,7 +14,7 @@ export default async function login (f: FastifyInstance) {
     if(error) return res.code(403).send({ status: `${res.statusCode}`, msg: 'You are not logged in!', error })
 
     try {
-      const users =  f.mongo.db?.collection('users')
+      const users = f.mongo.client.db().collection('users')
       //filter to just return user and pwd from document
       user = await users?.findOne<User>({ email: req.body.email }) as User
     } catch (e) {

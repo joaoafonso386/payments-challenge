@@ -17,7 +17,7 @@ export default async function transfer(f: FastifyInstance) {
         if (token.type !== UserType.USER) {
           throw new Error('You are not a user, transfers are not available');
         }
-        const usersCollection = f.mongo.db?.collection('users');
+        const usersCollection = f.mongo.client.db().collection('users')
         const users =
           (await usersCollection
             ?.find<User>({ email: { $in: [token.email, receiverEmail] } })
@@ -39,7 +39,7 @@ export default async function transfer(f: FastifyInstance) {
           throw new Error("External confirmation not guaranteed")
         }
 
-        const transfersCollection = f.mongo.db?.collection('transfers');
+        const transfersCollection = f.mongo.client.db().collection('transfers')
         session = f.mongo.client.startSession()
 
         await session.withTransaction(async () => {
@@ -90,8 +90,8 @@ export default async function transfer(f: FastifyInstance) {
     }
 
     try {
-      const transfersCollection = f.mongo.db?.collection('transfers')
-      const usersCollection = f.mongo.db?.collection('users');
+      const transfersCollection = f.mongo.client.db().collection('transfers')
+      const usersCollection = f.mongo.client.db().collection('users')
       let lasTransaction;
   
       if(transferId) {
