@@ -1,6 +1,6 @@
 import { Db } from 'mongodb';
 import { User } from 'app/types/types';
-import { validateAuthBody } from '../utils/utils';
+import { validateAuthBody } from '../validators/validators';
 import { FastifyInstance } from 'fastify';
 import { compare } from '@node-rs/bcrypt';
 import { sign } from 'jsonwebtoken';

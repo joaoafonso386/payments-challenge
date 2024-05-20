@@ -1,6 +1,6 @@
 import { User } from 'app/types/types';
 import { hash } from '@node-rs/bcrypt';
-import { validateAuthBody } from "../utils/utils";
+import { validateAuthBody } from "../validators/validators";
 import { FastifyInstance } from 'fastify';
 
 export default async function register (f: FastifyInstance) {
