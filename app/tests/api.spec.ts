@@ -4,6 +4,14 @@ import { newUserLogin, newUserRegister } from './mocks/registerMock';
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from '../api';
 
+jest.mock('jsonwebtoken', () => ({
+  sign: () => "tokentest123",
+  verify: () => ({
+    email: "test@gmail.com",
+    type: "user"
+  })
+}))
+
 describe('Payments Challenge API', () => {
   let server: FastifyInstance;
   let connection: MongoClient;
@@ -59,16 +67,16 @@ describe('Payments Challenge API', () => {
     expect(response.json()).toEqual({ msg: 'You are registered!', status: response.json().status });
   });
 
+  //registers invalid user
 
-  it('logs a user ', async () => {
+  it('logs a valid user', async () => {
     const response = await server.inject({
       method: 'POST',
       url: '/login',
       payload: newUserLogin
     });
 
-    expect(response.json().status).toEqual('200');
-    expect(response.json()).toEqual({ msg: 'You are registered!', status: response.json().status });
+    expect(response.json()).toEqual({ message: 'Your are logged in!', token: 'tokentest123' });
   });
 
 });
