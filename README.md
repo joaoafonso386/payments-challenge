@@ -1,4 +1,4 @@
-# PaymentsChallenge
+# Payments Challenge
 
 This project is inspired by this challenge:
 
@@ -6,6 +6,8 @@ This project is inspired by this challenge:
 
 Stack:
 
+-> pnpm<br>
+-> Docker<br>
 -> Nx<br>
 -> Fastify<br>
 -> Node JS w/ Typescript<br>
