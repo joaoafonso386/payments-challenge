@@ -9,7 +9,7 @@ const config: Config = {
   },
   watchPathIgnorePatterns: ['globalConfig'],
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: './coverage/payments-challenge',
+  coverageDirectory: './coverage/',
   coverageReporters: ['text', 'json', 'lcov', 'clover', 'cobertura', 'html'],
   testMatch: [
     '<rootDir>/app/**/tests/(?!mocks/)**/*.[jt]s?(x)',

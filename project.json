@@ -10,7 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/payments-challenge",
+        "outputPath": "dist",
         "format": ["cjs"],
         "bundle": false,
         "main": "app/main.ts",
