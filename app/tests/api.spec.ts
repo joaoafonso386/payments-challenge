@@ -1,4 +1,4 @@
-import { initDbValidation } from './../validators/db/db';
+import { initDbValidation } from './db/db';
 import { Db, MongoClient } from 'mongodb';
 import { newUserLogin, newUserRegister } from './mocks/registerMock';
 import Fastify, { FastifyInstance } from 'fastify';
@@ -21,7 +21,7 @@ describe('Payments Challenge API', () => {
   beforeAll(async () => {
     process.env.MONGO_CONNECTION_STRING = process.env.MONGO_URL
     connection = await MongoClient.connect(process.env.MONGO_URL as string);
-    db = await connection.db();
+    db = connection.db();
     await initDbValidation(db)
   })
 

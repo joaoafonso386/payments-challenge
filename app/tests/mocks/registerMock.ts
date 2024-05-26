@@ -5,6 +5,13 @@ export const newUserRegister = {
   email: 'test@gmail.com',
   type: 'user',
 }
+export const newShopkeeperRegister = {
+  name: 'test2',
+  pwd: 'test1234',
+  postCode: '1900-099',
+  email: 'test2@gmail.com',
+  type: 'shopkeeper',
+}
 
 export const newUserLogin = {
   email: 'test@gmail.com',
