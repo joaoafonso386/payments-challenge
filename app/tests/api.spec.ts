@@ -1,6 +1,6 @@
 import { initDbValidation } from './db/db';
 import { Db, MongoClient } from 'mongodb';
-import { newUserLogin, newUserRegister } from './mocks/registerMock';
+import { newShopkeeperRegister, newUserLogin, newUserRegister } from './mocks/registerMock';
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from '../api';
 
@@ -61,6 +61,17 @@ describe('Payments Challenge API', () => {
       method: 'POST',
       url: '/register',
       payload: newUserRegister
+    });
+
+    expect(response.json().status).toEqual('200');
+    expect(response.json()).toEqual({ msg: 'You are registered!', status: response.json().status });
+  });
+
+  it('registers a shopkeeper ', async () => {
+    const response = await server.inject({
+      method: 'POST',
+      url: '/register',
+      payload: newShopkeeperRegister
     });
 
     expect(response.json().status).toEqual('200');
