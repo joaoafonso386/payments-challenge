@@ -1,6 +1,6 @@
 import { initDbValidation } from './db/db';
 import { Db, MongoClient } from 'mongodb';
-import { newShopkeeperRegister, newUserLogin, newUserRegister } from './mocks/registerMock';
+import { externalFetch, newShopkeeperRegister, newUserLogin, newUserRegister, newUserTransfer } from './mocks/mocks';
 import Fastify, { FastifyInstance } from 'fastify';
 import { api } from '../api';
 
@@ -11,6 +11,7 @@ jest.mock('jsonwebtoken', () => ({
     type: "user"
   })
 }))
+
 
 describe('Payments Challenge API', () => {
   let server: FastifyInstance;
@@ -88,6 +89,22 @@ describe('Payments Challenge API', () => {
     });
 
     expect(response.json()).toEqual({ message: 'Your are logged in!', token: 'tokentest123' });
+  });
+
+  it('transfers to a shopkeeper', async () => {
+
+    jest.spyOn(global, 'fetch').mockImplementationOnce(async () => Promise.resolve(externalFetch) as unknown as Response);
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/transfer',
+      payload: newUserTransfer,
+      headers: {
+        authorization: "Bearer tokentest123"
+      }
+    });
+
+    expect(response.json()).toEqual({ msg: 'Transfer made' });
   });
 
 });
