@@ -107,4 +107,23 @@ describe('Payments Challenge API', () => {
     expect(response.json()).toEqual({ msg: 'Transfer made' });
   });
 
+  it('reverts a transfer by its id', async () => {
+
+    const lastTransfer = await db.collection('transfers').find({}).toArray()
+    const id = lastTransfer[0]._id.toString()
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/transfer/revert',
+      payload: {
+        transferId: id
+      },
+      headers: {
+        authorization: "Bearer tokentest123"
+      }
+    });
+
+    expect(response.json()).toEqual({ msg: 'Transfer reverted' });
+  });
+
 });
