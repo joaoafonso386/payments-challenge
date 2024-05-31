@@ -1,4 +1,4 @@
-import { initDbValidation } from './db/db';
+import { createTransfer, initDbValidation } from './db/db';
 import { Db, MongoClient } from 'mongodb';
 import { externalFetch, newShopkeeperRegister, newUserLogin, newUserRegister, newUserTransfer } from './mocks/mocks';
 import Fastify, { FastifyInstance } from 'fastify';
@@ -118,6 +118,22 @@ describe('Payments Challenge API', () => {
       payload: {
         transferId: id
       },
+      headers: {
+        authorization: "Bearer tokentest123"
+      }
+    });
+
+    expect(response.json()).toEqual({ msg: 'Transfer reverted' });
+  });
+
+  it('reverts last transfer', async () => {
+
+    await createTransfer(server)
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/transfer/revert',
+      payload: {},
       headers: {
         authorization: "Bearer tokentest123"
       }

@@ -1,3 +1,4 @@
+import { FastifyInstance } from 'fastify'
 import { Db } from 'mongodb'
 
 export const initDbValidation = async (db: Db) => {
@@ -74,6 +75,20 @@ export const initDbValidation = async (db: Db) => {
                     },
                 },
             },
+        },
+    })
+}
+
+export const createTransfer = async (server: FastifyInstance) => {
+    await server.inject({
+        method: 'POST',
+        url: '/transfer',
+        payload: {
+            receiver: 'test2@gmail.com',
+            amount: 300,
+        },
+        headers: {
+            authorization: 'Bearer tokentest123',
         },
     })
 }
