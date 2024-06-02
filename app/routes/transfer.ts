@@ -14,9 +14,6 @@ export default async function transfer(f: FastifyInstance) {
       let session: any;
 
       try {
-        if (token.type !== UserType.USER) {
-          throw new Error('You are not a user, transfers are not available');
-        }
         const usersCollection = f.mongo.client.db().collection('users')
         const users =
           (await usersCollection
@@ -84,10 +81,6 @@ export default async function transfer(f: FastifyInstance) {
     const transferId = req.body.transferId
     let session: any;
 
-
-    if (token.type !== UserType.USER) {
-      throw new Error('You are not a user, you can not revert a transfer');
-    }
 
     try {
       const transfersCollection = f.mongo.client.db().collection('transfers')
