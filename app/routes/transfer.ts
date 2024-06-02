@@ -101,7 +101,7 @@ export default async function transfer(f: FastifyInstance) {
       }
   
       if(isEmpty(lasTransaction)) {
-        throw new Error("There are no transactions currently")
+        throw new Error("The provided transaction id is not valid or if no id was provided, there may not be transactions currently")
       }
   
       const { _id, amount, receiver } = lasTransaction 
