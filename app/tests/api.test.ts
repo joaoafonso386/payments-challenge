@@ -112,7 +112,7 @@ describe('Payments Challenge API', () => {
         })
     })
 
-    it('logs a valid user', async () => {
+    it('logs in a valid user', async () => {
         const response = await server.inject({
             method: 'POST',
             url: '/login',
