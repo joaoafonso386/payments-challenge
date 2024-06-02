@@ -94,6 +94,7 @@ describe('Payments Challenge API', () => {
         expect(response.json()).toEqual({
             error: "Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided {}",
             msg: "You are not registered!",
+            status: response.json().status,
         })
     })
 
@@ -110,8 +111,6 @@ describe('Payments Challenge API', () => {
             status: response.json().status,
         })
     })
-
-    //registers invalid user
 
     it('logs a valid user', async () => {
         const response = await server.inject({
@@ -157,12 +156,30 @@ describe('Payments Challenge API', () => {
 
         expect(response.json()).toEqual({
             error: 'Internal Server Error',
-            message: 'Error: You are not a user, transfers are not available',
+            message: 'You are not a user, transfers are not available',
+            statusCode: 500,
+        })
+
+    })
+
+    it('fails transferring because of invalid token format', async () => {
+        const response = await server.inject({
+            method: 'POST',
+            url: '/transfer',
+            payload: newUserTransfer,
+            headers: {
+                authorization: 'tokentest123',
+            },
+        })
+
+        expect(response.json()).toEqual({
+            error: 'Internal Server Error',
+            message: 'Invalid authorization header format',
             statusCode: 500,
         })
     })
 
-    it('fails because of external service', async () => {
+    it('fails transferring because of external service', async () => {
         jest.spyOn(global, 'fetch').mockImplementationOnce(
             async () => Promise.resolve(externalFetchFail) as unknown as Response
         )
