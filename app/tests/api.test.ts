@@ -70,7 +70,7 @@ describe('Payments Challenge API', () => {
         })
     })
 
-    it('registers a user ', async () => {
+    it('registers a valid user ', async () => {
         const response = await server.inject({
             method: 'POST',
             url: '/register',
@@ -84,7 +84,20 @@ describe('Payments Challenge API', () => {
         })
     })
 
-    it('registers a shopkeeper ', async () => {
+    it('registers invalid user ', async () => {
+        const response = await server.inject({
+            method: 'POST',
+            url: '/register',
+            payload: {},
+        })
+
+        expect(response.json()).toEqual({
+            error: "Must provide name, password, email, post code and type. Must have a valid postCode and email. Provided {}",
+            msg: "You are not registered!",
+        })
+    })
+
+    it('registers a valid shopkeeper ', async () => {
         const response = await server.inject({
             method: 'POST',
             url: '/register',
