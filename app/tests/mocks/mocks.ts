@@ -23,7 +23,12 @@ export const newUserTransfer = {
     amount: 240,
 }
 
-export const externalFetch = {
+export const externalFetchSuccess = {
     ok: true,
     json: async () => ({ data: { authorization: true } }),
+}
+
+export const externalFetchFail = {
+    ok: true,
+    json: async () => ({ data: { authorization: false } }),
 }

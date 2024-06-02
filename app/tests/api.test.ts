@@ -1,7 +1,8 @@
 import { createTransfer, initDbValidation } from './db/db'
 import { Db, MongoClient } from 'mongodb'
 import {
-    externalFetch,
+    externalFetchFail,
+    externalFetchSuccess,
     newShopkeeperRegister,
     newUserLogin,
     newUserRegister,
@@ -15,6 +16,12 @@ jest.mock('jsonwebtoken', () => ({
     sign: () => 'tokentest123',
     verify: jest.fn(() => ({ email: 'test@gmail.com', type: 'user' })),
 }))
+
+jest.spyOn(global.Math, 'random').mockReturnValue(1);
+jest.spyOn(global, 'fetch').mockImplementation(
+    async () => Promise.resolve(externalFetchSuccess) as unknown as Response
+)
+
 
 describe('Payments Challenge API', () => {
     let server: FastifyInstance
@@ -107,9 +114,6 @@ describe('Payments Challenge API', () => {
     })
 
     it('transfers to a shopkeeper', async () => {
-        jest.spyOn(global, 'fetch').mockImplementationOnce(
-            async () => Promise.resolve(externalFetch) as unknown as Response
-        )
 
         const response = await server.inject({
             method: 'POST',
@@ -145,6 +149,27 @@ describe('Payments Challenge API', () => {
         })
     })
 
+    it('fails because of external service', async () => {
+        jest.spyOn(global, 'fetch').mockImplementationOnce(
+            async () => Promise.resolve(externalFetchFail) as unknown as Response
+        )
+        
+        const response = await server.inject({
+            method: 'POST',
+            url: '/transfer',
+            payload: newUserTransfer,
+            headers: {
+                authorization: 'Bearer tokentest123',
+            },
+        })
+
+        expect(response.json()).toEqual({
+            statusCode: 500,
+            error: 'Internal Server Error',
+            message: 'Error: External confirmation not guaranteed'
+          })
+    })
+
     it('reverts a transfer by its id', async () => {
         const lastTransfer = await db.collection('transfers').find({}).toArray()
         const id = lastTransfer[0]._id.toString()
@@ -164,6 +189,7 @@ describe('Payments Challenge API', () => {
     })
 
     it('reverts last transfer', async () => {
+
         await createTransfer(server)
 
         const response = await server.inject({
